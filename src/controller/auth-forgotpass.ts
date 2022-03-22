@@ -30,7 +30,7 @@ router.post(
         expiresIn: '300s',
       });
 
-      const resetURL: string = `${process.env.HOST}api/v1/forgotpassword/${token}`;
+      const resetURL: string = `${process.env.CLIENT_HOST}resetpassword/?key=${token}`;
       const isEmailSent = await sendEmail(isEmailAvailable[0].email, 'Reset Password - Salt', resetURL);
       if (isEmailSent) {
         res.status(201).json({ error: false, data: { message: ['Reset link sent to your email'] } });
