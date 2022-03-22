@@ -22,4 +22,14 @@ const getEmployeeRepo = async (empid: any) => {
   return await employeeModel.findOne({ _id: empid });
 };
 
-export { isEmailAvailableRepo, isEmpnameAvailableRepo, insertEmployeeRepo, getEmployeeRepo };
+const updatePasswordRepo = async (email: string, password: string) => {
+  return await employeeModel.findOneAndUpdate({ email }, { password });
+};
+
+export {
+  isEmailAvailableRepo,
+  isEmpnameAvailableRepo,
+  insertEmployeeRepo,
+  getEmployeeRepo,
+  updatePasswordRepo,
+};

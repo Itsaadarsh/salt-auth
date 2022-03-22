@@ -3,7 +3,8 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import validationMiddleware from '../middlerware/validation/forgotpassword';
 import validate from '../helper/validateErrors';
-import { isEmailAvailableRepo } from '../repository/auth-repo';
+import bcrypt from 'bcrypt';
+import { isEmailAvailableRepo, updatePasswordRepo } from '../repository/auth-repo';
 
 const router = express.Router();
 
@@ -41,5 +42,22 @@ router.post(
     }
   }
 );
+
+router.post('/forgotpassword/:token', async (req: express.Request, res: express.Response) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+    const verifiedToken: any = await jwt.verify(token, process.env.JWT_TOKEN!);
+
+    bcrypt.hash(password, 11, async (err, hash) => {
+      if (!err) {
+        await updatePasswordRepo(verifiedToken.email, hash);
+        res.status(201).json({ error: false, data: { message: ['Password has been successfully reset'] } });
+      }
+    });
+  } catch (err) {
+    res.status(400).json({ error: true, data: { message: ['Token has expired'] } });
+  }
+});
 
 export { router as forgotpassword };
