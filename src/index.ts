@@ -21,7 +21,7 @@ app.use('/api/v1/', register);
 app.use('/api/v1/', getEmployee);
 app.use('/api/v1/', forgotpassword);
 
-app.listen(8080, async () => {
+app.listen(PORT, async () => {
   await connectDB();
-  log.info(`Salt Auth Server Running @ -  ${process.env.HOST}${PORT}/api/v1`);
+  log.info(`Salt Auth Server Running @ -  ${process.env.HOST}api/v1`);
 });
