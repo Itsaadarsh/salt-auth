@@ -16,6 +16,11 @@ app.use(json());
 app.use(cors());
 
 // Routes
+
+app.get('/', (_, res) => {
+  res.json({ message: 'Welcome to Salt.pe backend!' });
+});
+
 app.use('/api/v1/', login);
 app.use('/api/v1/', register);
 app.use('/api/v1/', getEmployee);
