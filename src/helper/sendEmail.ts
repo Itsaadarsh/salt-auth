@@ -14,7 +14,7 @@ const sendEmail = async (email: string, subject: string, text: string) => {
       from: 'saadarsh362@gmail.com',
       to: email,
       subject: subject,
-      html: `<h1>Reset password URL</h1><p>This URL expires in 5 min : ${text}</p>`,
+      html: `<h1>Reset password URL</h1><p>This URL expires in 5 min : <a href="${text}">Reset Password</a></p>`,
     };
 
     await transporter.sendMail(mailOptions);
