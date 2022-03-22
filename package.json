@@ -14,7 +14,9 @@
     "url": "https://github.com/Itsaadarsh/salt-auth/issues"
   },
   "dependencies": {
+    "@types/jest": "^27.4.1",
     "@types/nodemailer": "^6.4.4",
+    "@types/supertest": "^2.0.12",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -22,11 +24,15 @@
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "firebase": "^8.2.5",
+    "jest": "^27.5.1",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^8.4.1",
     "mongoose": "^5.11.14",
     "nodemailer": "^6.7.3",
     "pino": "^7.2.0",
     "pino-pretty": "^7.2.0",
+    "supertest": "^6.2.2",
+    "ts-jest": "^27.1.3",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
@@ -46,7 +52,15 @@
     "postinstall": "tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
-  "homepage": "https://github.com/Itsaadarsh/salt-auth#readme"
+  "homepage": "https://github.com/Itsaadarsh/salt-auth#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/helper/setup.ts"
+    ]
+  }
 }
