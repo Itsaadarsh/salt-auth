@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/register', validationMiddleware(), async (req: express.Request, res: express.Response) => {
   try {
+    // Server side validation
     if (validate(req, res)) {
       return;
     }
@@ -17,21 +18,16 @@ router.post('/register', validationMiddleware(), async (req: express.Request, re
 
     const isEmailAvailable = await isEmailAvailableRepo(email);
     const isEmpnameAvailable = await isEmpnameAvailableRepo(empUserName);
-
     if (isEmailAvailable.length || isEmpnameAvailable.length != 0) {
       res.status(400).json({ error: true, data: { message: [`This employee is already registered`] } });
       return;
     }
 
-    bcrypt.hash(password, 11, async (err, hash) => {
-      if (!err) {
-        await insertEmployeeRepo(empUserName, email, hash);
-        res.status(201).json({
-          error: false,
-          data: { message: ['Employee successfully registered!'] },
-        });
-        return;
-      }
+    // Hashing employee password
+    bcrypt.hash(password, 11, async (_, hash) => {
+      await insertEmployeeRepo(empUserName, email, hash); // Inserting new employee
+      res.status(201).json({ error: false, data: { message: ['Employee successfully registered!'] } });
+      return;
     });
   } catch (err) {
     res.status(400).json({ error: true, data: { message: [err.message] } });

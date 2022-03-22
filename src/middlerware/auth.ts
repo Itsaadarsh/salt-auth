@@ -9,6 +9,7 @@ declare global {
   }
 }
 
+// Authentication Middleware
 const auth = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const headerToken: string = req.headers.authorization?.split(' ')[1]!;

@@ -1,6 +1,7 @@
 import employeeModel from '../entity/employee';
 import mongoose from 'mongoose';
 
+// All DB calls for authentication
 const isEmailAvailableRepo = async (email: string) => {
   return await employeeModel.find({ email });
 };

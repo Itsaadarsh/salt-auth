@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import express from 'express';
 
+// Validating server side request body
 const validate = (req: express.Request, res: express.Response) => {
   const valiErrors = validationResult(req);
   if (!valiErrors.isEmpty()) {

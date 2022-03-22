@@ -13,24 +13,25 @@ router.post(
   validationMiddleware(),
   async (req: express.Request, res: express.Response) => {
     try {
+      // Server side validation
       if (validate(req, res)) {
         return;
       }
 
       const { email }: { email: string } = req.body;
-
       const isEmailAvailable = await isEmailAvailableRepo(email);
-
       if (isEmailAvailable.length == 0) {
         res.status(400).json({ error: true, data: { message: [`Something went wrong!`] } });
         return;
       }
 
+      // Generating forgotpassword token
       const token: string = jwt.sign({ email: isEmailAvailable[0].email }, process.env.JWT_TOKEN!, {
         expiresIn: '300s',
       });
-
       const resetURL: string = `${process.env.CLIENT_HOST}resetpassword/?key=${token}`;
+
+      // Sending email
       const isEmailSent = await sendEmail(isEmailAvailable[0].email, 'Reset Password - Salt', resetURL);
       if (isEmailSent) {
         res.status(201).json({ error: false, data: { message: ['Reset link sent to your email'] } });
@@ -49,6 +50,7 @@ router.post('/forgotpassword/:token', async (req: express.Request, res: express.
     const { password } = req.body;
     const verifiedToken: any = await jwt.verify(token, process.env.JWT_TOKEN!);
 
+    // Hashing new password
     bcrypt.hash(password, 11, async (err, hash) => {
       if (!err) {
         await updatePasswordRepo(verifiedToken.email, hash);

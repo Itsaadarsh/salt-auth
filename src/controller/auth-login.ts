@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.post('/login', validationMiddleware(), async (req: express.Request, res: express.Response) => {
   try {
+    // Server side validation
     if (validate(req, res)) {
       return;
     }
@@ -27,6 +28,7 @@ router.post('/login', validationMiddleware(), async (req: express.Request, res: 
         return;
       }
 
+      // Generating JWT Token
       const token: string = jwt.sign({ empid: isEmpnameAvailable[0]._id }, process.env.JWT_TOKEN!, {
         expiresIn: '24h',
       });

@@ -5,6 +5,7 @@ import auth from '../middlerware/auth';
 const router = express.Router();
 
 router.get('/employee', auth, async (req: express.Request, res: express.Response) => {
+  // Getting authenticated employee data using header token
   const employee = await getEmployeeRepo(req.emp!.empid);
   res.status(201).json({
     error: false,
